@@ -6,19 +6,19 @@ function R = Algebraic(file, d)
     C = zeros(N);
     i = 1;
     p = 1;
-    while (i <= N) %se citeste linie cu linie pentru a parsa matricea
+    while (i <= N) %we parse the matrix line by line
        line = fgets(fid);
        newstrr = split(line, " ");
-       i = str2double(newstrr(1)); %numarul nodului
-       L(i) = str2double(newstrr(2)); %numarul de vecini
+       i = str2double(newstrr(1)); %number of the node
+       L(i) = str2double(newstrr(2)); %number of neighbors
        r = 1;
        J(i) = L(i);
        for k=3:2+L(i)
-           if str2double(newstrr(k)) == i %se verifica daca pagina are link la ea insasi
-               J(i) = J(i) - 1; %se micsoreaza numarul de vecini in caz negativ
+           if str2double(newstrr(k)) == i %we check if the page has a link to itself
+               J(i) = J(i) - 1; %the number of neighbors is lowered
            end
        end
-       for j=3:2+L(i) %se construieste matricea de adiacenta
+       for j=3:2+L(i) %the adjaency matrix is formed
            k = str2double(newstrr(j));
            C(p, 1) = i;
            r = r + 1;
@@ -37,8 +37,7 @@ function R = Algebraic(file, d)
     I = eye(N) - d*B;
     Q = zeros(N);
     S = zeros(N);
-    %am implementat si adaptat algoritmul Gram-Schmidt si rezolvarea
-    %sistemului superior triunghiular din laboratoare
+    %Gram-Schmidt and upper triangular system
     for j=1:N
         for i=1:j-1
             S(i, j) = transpose(Q(:, i)) * I(:, j);
@@ -62,5 +61,5 @@ function R = Algebraic(file, d)
         H(:, i) = X;
     end
     e = ones(N, 1);
-    R = H*((1-d)/N)*e; %formula matematica pentru PR
+    R = H*((1-d)/N)*e; %the mathematical formula for PR
 end
