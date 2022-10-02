@@ -3,19 +3,19 @@ function [R1, R2] = PageRank(file, d, eps)
     line = fgets(fid);
     N = str2double(line);
     i = 1;
-    while (i <= N) %am trecut peste matrice fara sa memorez datele
+    while (i <= N) %passed the matrix without remembering the data
         line = fgets(fid);
         i = i + 1;
     end
     line = fgets(fid);
-    val1 = str2double(line); %am salvat val1 si val2
+    val1 = str2double(line); %val1 and val2 are saved
     line = fgets(fid);
     val2 = str2double(line);
     a = 1/(val2 - val1);
     b = (-1) * val1/(val2 - val1);
     fclose(fid);
     [~, name, ~] = fileparts(file);
-    newname = strcat(name, ".out"); %am format numele fisierului
+    newname = strcat(name, ".out"); %formed the name of the file
     fid = fopen(newname, "w");
     PR = Iterative(file, d, eps);
     fprintf(fid, '%d\n', N);
