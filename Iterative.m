@@ -6,19 +6,19 @@ function R = Iterative(file, d, eps)
     C = zeros(N);
     i = 1;
     p = 1;
-    while (i <= N) %se citeste linie cu linie pentru a parsa matricea
+    while (i <= N) %we parse the matrix line by line
        line = fgets(fid);
        newstrr = split(line, " ");
-       i = str2double(newstrr(1)); %numarul nodului
-       L(i) = str2double(newstrr(2)); %numarul de vecini
+       i = str2double(newstrr(1)); %node number
+       L(i) = str2double(newstrr(2)); %number of neighbors
        r = 1;
        J(i) = L(i);
        for k=3:2+L(i)
-           if str2double(newstrr(k)) == i %se verifica daca o pagina are link la ea insasi
-               J(i) = J(i) - 1; %se micsoreaza numarul de vecini in caz afirmativ
+           if str2double(newstrr(k)) == i %checks if a page has a link to itself
+               J(i) = J(i) - 1; 
            end
        end
-       for j=3:2+L(i) %se construieste matricea pe care se efectueaza operatiile
+       for j=3:2+L(i) %builds the matrix on which the operations are made
            k = str2double(newstrr(j));
            C(p, 1) = i;
            r = r + 1;
@@ -26,7 +26,7 @@ function R = Iterative(file, d, eps)
            if k == i 
                B(k, i) = 0;
            else
-               B(k, i) = 1/J(i); %se imparte la numarul de linkuri
+               B(k, i) = 1/J(i); %divides by the number of links
            end
        end
         B(i, i) = 0;
@@ -35,14 +35,14 @@ function R = Iterative(file, d, eps)
     end
     fclose(fid);
     flag = 1;
-    R = (1/N).*ones(N, 1); %PR la pasul initial
-    W = R; %PR la pasul k
-    T = R; %PR la pasul k+1
+    R = (1/N).*ones(N, 1); %PR at 0-step
+    W = R; %PR at k-step
+    T = R; %PR at k+!-step
     while flag
         W = T;
-        T = ((1 - d)/N).*ones(N, 1) + d.*B*W; %formula matematica pentru aflare PR 
+        T = ((1 - d)/N).*ones(N, 1) + d.*B*W; %the mathematical formula for PR
         U = T - W;
-        flag = 0; %retine daca s-a atins marja de eroare
+        flag = 0; %if there is the certain error, it is retained
         if norm(U) >= eps
             flag = 1;
         end
